@@ -23,10 +23,16 @@ func main() {
 	}
 	fmt.Printf("started server on endpoint %q:\n", serverAddr)
 
+	err = udpClient(ctx, serverAddr)
+	if err != nil {
+		log.Printf("udp client: %v", err)
+	}
+}
+
+func udpClient(ctx context.Context, addr net.Addr) error {
 	s, err := net.ListenPacket("udp", "127.0.0.1:")
 	if err != nil {
-		log.Printf("connecting to server: %v", err)
-		return
+		return fmt.Errorf("connecting to server: %v", err)
 	}
 	fmt.Printf("hi i'm a client which sends udp packages\n my endpoint is %q\n", s.LocalAddr())
 
@@ -39,13 +45,13 @@ func main() {
 
 	for {
 		time.Sleep(time.Second)
-		_, err := s.WriteTo([]byte(randomWord()), serverAddr)
+		_, err := s.WriteTo([]byte(randomWord()), addr)
 		if err != nil {
 			if ctx.Err().Error() == "context canceled" {
-				return
+				return ctx.Err()
 			}
 
-			log.Printf("sending msg to endpoint %q from %q: %v", s.LocalAddr(), serverAddr, err)
+			log.Printf("sending msg to endpoint %q from %q: %v", s.LocalAddr(), addr, err)
 			continue
 			// not returning here cuz the program shouldnt stop unless i cancel it
 		}
@@ -53,13 +59,12 @@ func main() {
 		buf := make([]byte, 1024)
 		n, readAddr, err := s.ReadFrom(buf)
 		if err != nil {
-			log.Printf("reading msg from %q: %v", readAddr, err)
-			return
+			return fmt.Errorf("reading msg from %q: %v", readAddr, err)
 		}
 		msg := buf[:n]
 
-		if readAddr.String() != serverAddr.String() {
-			log.Printf("stray message, endpoint %q does not match server's addr %q", readAddr, serverAddr)
+		if readAddr.String() != addr.String() {
+			log.Printf("stray message, endpoint %q does not match server's addr %q", readAddr, addr)
 			log.Printf("stray msg: %s", string(msg))
 		}
 
