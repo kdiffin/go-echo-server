@@ -15,3 +15,7 @@ graceful termination is handled. (with context lib)
 ## stuff learned
 
 context.Context, graceful cancellation, goroutines, concurrency, error handling, socket programming, net lib, communication via udp, fmt package, when to use log vs fmt,
+
+## todo
+
+implement a welcome message, so every time a new port is subscribed, it should send them a welcome message
