@@ -63,7 +63,7 @@ func main() {
 			log.Printf("stray msg: %s", string(msg))
 		}
 
-		fmt.Printf("CLIENT: the echo server echoed back %s\n", msg)
+		fmt.Printf("CLIENT: the echo server echoed back %q\n", msg)
 
 	}
 }
@@ -96,12 +96,11 @@ func echoUDPServer(ctx context.Context, addr string) (net.Addr, error) {
 			if err != nil {
 				return
 			}
-			fmt.Printf("SERVER: %q -- %q\n", clientAddr, string(buf[:n]))
+			fmt.Printf("SERVER: %q  (client endpoint) -- %q (msg)\n", clientAddr, string(buf[:n]))
 
 			// TODO: add some state which checks if this is the first message you sent to this endpoint, if not, just send it
 			// if its the first, send a hello message explaining what the server does
 			if _, err = s.WriteTo(buf[:n], clientAddr); err != nil {
-				fmt.Println("hey this is where i stopped working", "writeto")
 				return
 			}
 
@@ -120,7 +119,7 @@ func gibberish() []byte {
 }
 
 func randomWord() string {
-	words := []string{"grug", "ssj2", "ssj4", "concurrency", "paralellism", "htmx", "reactjs", "k8s", "aposd", "usd"}
+	words := []string{"grug", "ssj2", "ssj4", "concurrency", "go", "written in rust btw", "cloud native :geek emoji:", "cargo cult fan", "idempotent", "paralellism", "htmx", "reactjs", "k8s", "aposd", "usd"}
 
 	return words[mrand.IntN(len(words))]
 }
