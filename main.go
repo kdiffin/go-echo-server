@@ -47,7 +47,7 @@ func udpClient(ctx context.Context, addr net.Addr) error {
 		time.Sleep(time.Second)
 		_, err := s.WriteTo([]byte(randomWord()), addr)
 		if err != nil {
-			if ctx.Err().Error() == "context canceled" {
+			if ctx.Err() != nil && ctx.Err().Error() == "context canceled" {
 				return ctx.Err()
 			}
 
