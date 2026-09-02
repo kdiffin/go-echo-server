@@ -13,7 +13,8 @@ echo "hey im a new client" | nc -u 127.0.0.1 PORT_THE_SERVER_IS_LISTENING_ON
 graceful termination is handled. (with context lib)
 
 a nice visualization of the the "threads" (actually goroutines) within this program
-![goroutine-flow](./screenshot-goroutine-flow.png)
+
+![goroutine-flow](imgs/screenshot-9b683782359e73c035f3a36db8e3f61d.png)
 
 ## how to reason about concurrent applications (note)
 
@@ -36,4 +37,3 @@ context.Context, graceful cancellation, goroutines, concurrency, error handling,
 
 implement a welcome message, so every time a datagram is recieved from a new client endpoint, it should send them a welcome message (make this thing stateful)
 
-[only the diagram in this readme is ai generated]
