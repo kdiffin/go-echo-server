@@ -12,24 +12,8 @@ echo "hey im a new client" | nc -u 127.0.0.1 PORT_THE_SERVER_IS_LISTENING_ON
 
 graceful termination is handled. (with context lib)
 
-a nice visualization of the the "threads" (actually goroutines) within this program (AI generated)
-
-```text
-┌──────────────┐       packet        ┌──────────────┐
-│ client G     │ ------------------> │ server G     │
-│              │                     │              │
-│ Sleep        │                     │ ReadFrom     │
-│ WriteTo      │                     │ WriteTo      │
-│ ReadFrom     │ <------------------ │              │
-└──────┬───────┘        echo         └──────┬───────┘
-       │                                    │
-       │ ctx.Done()                         │ ctx.Done()
-       ↓                                    ↓
-    Close(s)                             Close(s)
-```
-
-> [!NOTE]
-> using AI to generate diagrams is pretty cool, write / design the implementation yourself, get the AI to generate the ASCII diagram for you.
+a nice visualization of the the "threads" (actually goroutines) within this program
+![goroutine-flow](./screenshot-goroutine-flow.png)
 
 ## how to reason about concurrent applications (note)
 
